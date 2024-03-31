@@ -30,9 +30,8 @@ services:
         max-file: "1"
   ngrok:
     image: wernight/ngrok
-    network_mode: host
     environment:
       NGROK_AUTH: "${NGROK_AUTH}"
-      NGROK_PORT: "nginx:8080"
-      NGROK_PROTOCOL: "TCP"
+      NGROK_PORT: "nginx:80"
+      NGROK_PROTOCOL: "HTTP"
     restart: always
