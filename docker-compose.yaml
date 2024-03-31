@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  jupyter:
+    container_name: jupyter
+    build: ./docker/jupyter
+    ports:
+      - "8888:8888"
+    tty: true
+    environment:
+      JUPYTER_TOKEN: "${JUPYTER_TOKEN}"
+    volumes:
+      - ./data/jupyter/work:/home/jovyan/work
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "1"
+  nginx:
+    build: docker/nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - jupyter
+    volumes:
+      - ./logs:/var/log/nginx
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "1"
+  ngrok:
+    image: wernight/ngrok
+    network_mode: host
+    environment:
+      NGROK_AUTH: "${NGROK_AUTH}"
+      NGROK_PORT: "nginx:8080"
+      NGROK_PROTOCOL: "TCP"
+    restart: always
