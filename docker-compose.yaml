@@ -6,8 +6,8 @@ services:
     ports:
       - "8888:8888"
     tty: true
-    environment:
-      JUPYTER_TOKEN: "${JUPYTER_TOKEN}"
+    env_file:
+      - .env
     volumes:
       - ./data/jupyter/work:/home/jovyan/work
     logging:
